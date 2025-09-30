@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>RePost</title>
-    <link th:ref="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-
     <header>
-        <button href="inicioSesion">Iniciar Sesión</button>
-        <button href="registro">Registrarse</button>
+        <a th:href="@{/inicioSesion}"><button>Iniciar sesión</button></a>
+        <a th:href="@{/registrarse}"><button>Registrarse</button></a>
     </header>
-
 </body>
 </html>
