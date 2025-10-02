@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+</head>
+<body>
+<div th:each="post : ${posts}">
+    <h3 th:text="${post.usuario.nombreUsuario}"></h3>
+    <p th:text="${post.texto}"></p>
+    <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Likes:</strong> <span th:text="${post.likes}"></span> |
+        <strong>Reposts:</strong> <span th:text="${post.repost}"></span></p>
+        <form th:action="@{/posts/like/{id}(id=${post.id})}" method="post">
+            <button type="submit">❤️</button>
+        </form>
+        <form th:action="@{/posts/repost/{id}(id=${post.id})}" method="post">
+            <button type="submit">🔁</button>
+        </form>
+    <hr>
+</div>
+</body>
+</html>
