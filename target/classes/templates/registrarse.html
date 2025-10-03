@@ -6,10 +6,8 @@
     <link th:ref="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-    <?php
-        include "datos.php"
-    ?>
-    <form method="post">
+    <h1>REGISTRARSE</h1>
+    <form action="/usuario/registrar" method="post">
         <label>Nombre de usuario</label> <br>
         <input type="text" name="nombreUsuario"><br>
         <label>Contraseña</label><br>
