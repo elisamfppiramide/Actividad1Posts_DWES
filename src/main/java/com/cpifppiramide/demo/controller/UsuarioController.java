@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,20 @@ public class UsuarioController {
     @GetMapping ("/usuario/nuevo")
     String registro(){
         return "registrarse";
+    }
+
+    @PostMapping("/inicioSesion")
+    String inicioSesion(@RequestParam String nombreUsuario, @RequestParam String password, Model model){
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        Usuario usuario1 = DAOFactory.getInstance().getDaoUsuarios().buscaUsuario(nombreUsuario);
+        if(usuario1 == null || !usuario1.getPassword().equals(password)) {
+            model.addAttribute("mensaje", "El usuario no ha sido encontrado");
+            return "redirect:/inicioSesion";
+        }
+        //List<Post> posts = daoFactory.getDaoPosts().listaPosts();
+       // model.addAttribute("posts", posts);
+        model.addAttribute("usuario", usuario1);
+        return "redirect:/posts";
     }
 
     @PostMapping("/usuario/registrar")
