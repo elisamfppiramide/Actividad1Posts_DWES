@@ -29,7 +29,7 @@ public class DAOFactory {
 
     public DAOPosts getDaoPosts(){
         if(this.daoPosts == null){
-            this.daoPosts = new DAOPostsRAM();
+            this.daoPosts = new DAOPostsRAM(daoUsuarios);
         }
         return this.daoPosts;
     }

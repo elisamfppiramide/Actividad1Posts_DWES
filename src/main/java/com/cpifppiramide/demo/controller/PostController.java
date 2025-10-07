@@ -10,40 +10,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class PostController {
 
     @GetMapping("/posts")
-    public String mostrarPosts(Model model){
+    public String verPosts(Model model){
         DAOFactory daoFactory = DAOFactory.getInstance();
-        DAOUsuarios daoUsuarios = daoFactory.getDaoUsuarios();
-        DAOPosts daoPosts = daoFactory.getDaoPosts();
-
-        if (daoUsuarios.listaClientes().isEmpty()) {
-            Usuario elisa = new Usuario("Elisa", "1234");
-            Usuario carlos = new Usuario("Carlos", "abcd");
-
-            daoUsuarios.registrarUsuario(elisa);
-            daoUsuarios.registrarUsuario(carlos);
-
-            daoPosts.add(elisa, new Post(1, "Hoy aprendí a usar Thymeleaf sin romper nada 😅", new Date(), 5, 1));
-            daoPosts.add(carlos, new Post(2, "Spring Boot empieza a tener sentido.", new Date(), 3, 0));
-            daoPosts.add(elisa, new Post(3, "Ya casi acabo el proyecto 🚗", new Date(), 7, 2));
-        }
-        List<Post> todosLosPosts = new ArrayList<>();
-        for (Usuario usuario : daoUsuarios.listaClientes()) {
-            todosLosPosts.addAll(usuario.getPosts());
-        }
-        model.addAttribute("posts", todosLosPosts);
+        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
+        model.addAttribute("posts", posts);
         return "posts";
     }
 
-    @PostMapping("/like/{id}")
+    @PostMapping("/post/like/{id}")
     public String likePost(@PathVariable int id){
         DAOFactory daoFactory = DAOFactory.getInstance();
         List<Post> posts = daoFactory.getDaoPosts().listaPosts();
@@ -56,17 +38,74 @@ public class PostController {
 
         return "redirect:/posts";
     }
-    @PostMapping("/repost/{id}")
+
+    @PostMapping("/post/repost/{id}")
     public String repostPost(@PathVariable int id){
         DAOFactory daoFactory = DAOFactory.getInstance();
         List<Post> posts = daoFactory.getDaoPosts().listaPosts();
         for(Post post : posts){
             if(post.getId() == id){
-                post.setLikes(post.getLikes() + 1);
+                post.setRepost(post.getRepost() +1);
                 break;
             }
         }
         return "redirect:/posts";
+    }
+
+    @PostMapping("/posts/add")
+    public String addPost(@RequestParam String texto, @RequestParam String usuario) {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        DAOPosts daoPosts = daoFactory.getDaoPosts();
+        DAOUsuarios daoUsuarios = daoFactory.getDaoUsuarios();
+
+        Usuario user = daoUsuarios.buscaUsuario(usuario);
+        if (user != null) {
+            int nuevoId = daoPosts.listaPosts().size() + 1;
+            daoPosts.add(user, new Post(nuevoId, texto, new Date(), 0, 0));
+        }
+
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/posts/user/{username}")
+    public String postsPorUsuario(@PathVariable String username, Model model) {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        DAOUsuarios daoUsuarios = daoFactory.getDaoUsuarios();
+
+        List<Post> filtrados = new ArrayList<>();
+        for (Usuario u : daoUsuarios.listaClientes()) {
+            if (u.getNombreUsuario().equalsIgnoreCase(username)) {
+                filtrados.addAll(u.getPosts());
+            }
+        }
+        model.addAttribute("posts", filtrados);
+        return "posts";
+    }
+
+    //Funciona
+    @GetMapping("/posts/fecha")
+    public String postsOrdenadosFecha(@RequestParam(defaultValue="asc") String orden, Model model) {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
+
+        posts.sort(Comparator.comparing(Post::getFecha));
+        if ("desc".equalsIgnoreCase(orden)) {
+            Collections.reverse(posts);
+        }
+        model.addAttribute("posts", posts);
+        return "posts";
+    }
+    //Funciona
+    @GetMapping("/posts/search")
+    public String postsPorTexto(@RequestParam String q, Model model) {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
+
+        List<Post> filtrados = posts.stream()
+                .filter(p -> p.getTexto().toLowerCase().contains(q.toLowerCase()))
+                .toList();
+        model.addAttribute("posts", filtrados);
+        return "posts";
     }
 }
 

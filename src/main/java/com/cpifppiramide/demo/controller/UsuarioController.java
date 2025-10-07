@@ -36,11 +36,8 @@ public class UsuarioController {
         Usuario usuario1 = DAOFactory.getInstance().getDaoUsuarios().buscaUsuario(nombreUsuario);
         if(usuario1 == null || !usuario1.getPassword().equals(password)) {
             model.addAttribute("mensaje", "El usuario no ha sido encontrado");
-            return "redirect:/inicioSesion";
+            return "inicioSesion";
         }
-        //List<Post> posts = daoFactory.getDaoPosts().listaPosts();
-       // model.addAttribute("posts", posts);
-        model.addAttribute("usuario", usuario1);
         return "redirect:/posts";
     }
 
@@ -49,7 +46,7 @@ public class UsuarioController {
         Usuario usuarioExistente = DAOFactory.getInstance().getDaoUsuarios().buscaUsuario(usuario.getNombreUsuario());
         if (usuarioExistente != null) {
             model.addAttribute("error", "El nombre de usuario ya está registrado.");
-            return "registro";
+            return "registrarse";
         }
         DAOFactory.getInstance().getDaoUsuarios().registrarUsuario(usuario);
         System.out.println("Usuario registrado: " + usuario);

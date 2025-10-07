@@ -6,16 +6,39 @@
 </head>
 <body>
 <h2>Posts</h2>
+<div>
+    <form th:action="@{/posts/add}" method="post">
+        <input type="text" name="texto" placeholder="Escribe tu post" required>
+        <input type="hidden" name="usuario" placeholder="nombre usuario">
+        <button type="submit">Añadir</button>
+    </form>
+</div>
+<div>
+    <form th:action="@{/posts/user}" method="get">
+        <input type="text" name="username" placeholder="Filtrar por usuario">
+        <button type="submit">Filtrar</button>
+    </form>
+</div>
+<div>
+    <form th:action="@{/posts/search}" method="get">
+        <input type="text" name="q" placeholder="Filtrar por texto">
+        <button type="submit">Buscar</button>
+    </form>
+</div>
+
+<a th:href="@{/posts/fecha(orden='asc')}">Orden ascendente</a> |
+<a th:href="@{/posts/fecha(orden='desc')}">Orden descendente</a>
+
 <div th:each="post : ${posts}">
     <p th:text="${post.texto}"></p>
     <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
     <p><strong>Likes:</strong> <span th:text="${post.likes}"></span> |
         <strong>Reposts:</strong> <span th:text="${post.repost}"></span></p>
 
-    <form th:action="@{/posts/like/{id}(id=${post.id})}" method="post">
+    <form th:action="@{/post/like/{id}(id=${post.id})}" method="post">
         <button type="submit">❤️</button>
     </form>
-    <form th:action="@{/posts/repost/{id}(id=${post.id})}" method="post">
+    <form th:action="@{/post/repost/{id}(id=${post.id})}" method="post">
         <button type="submit">🔁</button>
     </form>
     <hr>
