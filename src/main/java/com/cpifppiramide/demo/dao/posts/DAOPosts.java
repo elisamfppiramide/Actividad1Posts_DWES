@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DAOPosts {
 
-    public void add(Usuario usuario, Post post);
+    public void add(Post post, Usuario usuario);
     public List<Post> listaPosts();
 
 }

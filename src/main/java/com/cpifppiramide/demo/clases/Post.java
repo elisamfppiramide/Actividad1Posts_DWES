@@ -8,15 +8,23 @@ public class Post {
     private Date fecha;
     private int likes;
     private int repost;
+    private Usuario usuario;
 
-    public Post(int id, String texto, Date fecha, int likes, int repost) {
+    public Post(int id, String texto, Date fecha, int likes, int repost, Usuario usuario) {
         this.id = id;
         this.texto = texto;
         this.fecha = fecha;
         this.likes = likes;
         this.repost = repost;
+        this.usuario = usuario;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
     public int getId() {
         return id;
     }

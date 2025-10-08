@@ -23,13 +23,13 @@ public class DAOPostsRAM implements DAOPosts{
         daoUsuarios.registrarUsuario(elisa);
         daoUsuarios.registrarUsuario(carlos);
 
-        add(elisa, new Post(1, "Hoy aprendí a usar Thymeleaf sin romper nada 😅", new Date(), 5, 1));
-        add(carlos, new Post(2, "Spring Boot empieza a tener sentido.", new Date(), 3, 0));
-        add(elisa, new Post(3, "Ya casi acabo el proyecto 🚗", new Date(), 7, 2));
+        add(new Post(1, "Hoy aprendí a usar Thymeleaf sin romper nada 😅", new Date(), 5, 1, elisa), elisa);
+        add(new Post(2, "Spring Boot empieza a tener sentido.", new Date(), 3, 0, carlos), carlos);
+        add(new Post(3, "Ya casi acabo el proyecto 🚗", new Date(), 7, 2, elisa), elisa );
     }
 
     @Override
-    public void add(Usuario usuario, Post post) {
+    public void add(Post post, Usuario usuario) {
         usuario.addPost(post);
         this.posts.add(post);
     }

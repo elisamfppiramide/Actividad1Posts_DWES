@@ -5,6 +5,7 @@ import com.cpifppiramide.demo.clases.Usuario;
 import com.cpifppiramide.demo.dao.DAOFactory;
 import com.cpifppiramide.demo.dao.posts.DAOPosts;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
+import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosRAM;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,29 +54,31 @@ public class PostController {
     }
 
     @PostMapping("/posts/add")
-    public String addPost(@RequestParam String texto, @RequestParam String usuario) {
+    public String addPost(@RequestParam String texto) {
         DAOFactory daoFactory = DAOFactory.getInstance();
         DAOPosts daoPosts = daoFactory.getDaoPosts();
-        DAOUsuarios daoUsuarios = daoFactory.getDaoUsuarios();
+        DAOUsuariosRAM daoUsuariosRAM = (DAOUsuariosRAM) daoFactory.getDaoUsuarios();
 
-        Usuario user = daoUsuarios.buscaUsuario(usuario);
-        if (user != null) {
-            int nuevoId = daoPosts.listaPosts().size() + 1;
-            daoPosts.add(user, new Post(nuevoId, texto, new Date(), 0, 0));
-        }
+        Usuario usuario = daoUsuariosRAM.getUsuarioActual();
+        int nuevoID = daoPosts.listaPosts().size() + 1;
+        Post nuevoPost = new Post(nuevoID, texto, new Date(), 0, 0, usuario);
+        daoPosts.add(nuevoPost, usuario);
+        System.out.println("Nuevo post añadido por: " + usuario.getNombreUsuario());
 
         return "redirect:/posts";
     }
 
-    @GetMapping("/posts/user/{username}")
-    public String postsPorUsuario(@PathVariable String username, Model model) {
+    @GetMapping("/posts/user")
+    public String filtrarPorUsuario(@RequestParam String username, Model model) {
         DAOFactory daoFactory = DAOFactory.getInstance();
-        DAOUsuarios daoUsuarios = daoFactory.getDaoUsuarios();
+        DAOPosts daoPosts = daoFactory.getDaoPosts();
 
         List<Post> filtrados = new ArrayList<>();
-        for (Usuario u : daoUsuarios.listaClientes()) {
-            if (u.getNombreUsuario().equalsIgnoreCase(username)) {
-                filtrados.addAll(u.getPosts());
+        for (Post post : daoPosts.listaPosts()) {
+            Usuario user = post.getUsuario();
+
+            if(user.getNombreUsuario().equalsIgnoreCase(username)){
+                filtrados.add(post);
             }
         }
         model.addAttribute("posts", filtrados);

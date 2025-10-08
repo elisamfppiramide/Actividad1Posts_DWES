@@ -9,7 +9,6 @@
 <div>
     <form th:action="@{/posts/add}" method="post">
         <input type="text" name="texto" placeholder="Escribe tu post" required>
-        <input type="hidden" name="usuario" placeholder="nombre usuario">
         <button type="submit">Añadir</button>
     </form>
 </div>
@@ -27,10 +26,13 @@
 </div>
 
 <a th:href="@{/posts/fecha(orden='asc')}">Orden ascendente</a> |
-<a th:href="@{/posts/fecha(orden='desc')}">Orden descendente</a>
+<a th:href="@{/posts/fecha(orden='desc')}">Orden descendente</a><br>
+
+<a th:href ="@{/posts}">Volver al inicio </a>
 
 <div th:each="post : ${posts}">
     <p th:text="${post.texto}"></p>
+    <p><strong><span th:text="${post.usuario.nombreUsuario}"></span></strong></p>
     <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
     <p><strong>Likes:</strong> <span th:text="${post.likes}"></span> |
         <strong>Reposts:</strong> <span th:text="${post.repost}"></span></p>

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public class DAOUsuariosRAM implements DAOUsuarios{
     private List<Usuario> usuarios;
+    private Usuario usuarioActual;
 
     public DAOUsuariosRAM(){
         this.usuarios = new ArrayList<>();
@@ -26,7 +27,19 @@ public class DAOUsuariosRAM implements DAOUsuarios{
 
     @Override
     public Usuario buscaUsuario(String nombreUsuario) {
-        Optional<Usuario> optional = this.usuarios.stream().filter(usuario -> usuario.getNombreUsuario().equals(nombreUsuario)).findFirst();
-        return optional.orElse(null);
+        for (Usuario usuario : this.usuarios) {
+            if(usuario.getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    public void setUsuarioActual(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
+    }
+
+    public Usuario getUsuarioActual() {
+        return this.usuarioActual;
     }
 }
