@@ -66,11 +66,4 @@ public class UsuarioController {
         System.out.println(usuarios);
         return "usuarios";
     }
-
-
-
-
-
-
-
 }

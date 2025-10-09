@@ -31,6 +31,7 @@
 <a th:href ="@{/posts}">Volver al inicio </a>
 
 <div th:each="post : ${posts}">
+    <p><strong><span th:text="${post.usuario.nombreUsuario}"></span></strong></p>
     <p th:text="${post.texto}"></p>
     <p><strong><span th:text="${post.usuario.nombreUsuario}"></span></strong></p>
     <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>

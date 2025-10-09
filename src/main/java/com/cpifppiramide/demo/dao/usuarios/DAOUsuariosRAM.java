@@ -12,6 +12,8 @@ public class DAOUsuariosRAM implements DAOUsuarios{
 
     public DAOUsuariosRAM(){
         this.usuarios = new ArrayList<>();
+        registrarUsuario(new Usuario("Elisa", "1234"));
+        registrarUsuario(new Usuario("Carlos", "abcd"));
     }
 
 

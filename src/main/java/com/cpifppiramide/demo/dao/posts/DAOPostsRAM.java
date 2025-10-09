@@ -10,6 +10,7 @@ import java.util.List;
 
 public class DAOPostsRAM implements DAOPosts{
 
+
     private List<Post> posts;
     private DAOUsuarios daoUsuarios;
 
@@ -17,8 +18,8 @@ public class DAOPostsRAM implements DAOPosts{
         this.posts = new ArrayList<>();
         this.daoUsuarios = daoUsuarios;
 
-        Usuario elisa = new Usuario("Elisa", "1234");
-        Usuario carlos = new Usuario("Carlos", "abcd");
+        Usuario elisa = daoUsuarios.buscaUsuario("Elisa");
+        Usuario carlos = daoUsuarios.buscaUsuario("Carlos");
 
         daoUsuarios.registrarUsuario(elisa);
         daoUsuarios.registrarUsuario(carlos);

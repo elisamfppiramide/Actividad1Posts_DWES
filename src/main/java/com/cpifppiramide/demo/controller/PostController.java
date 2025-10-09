@@ -68,6 +68,7 @@ public class PostController {
         return "redirect:/posts";
     }
 
+
     @GetMapping("/posts/user")
     public String filtrarPorUsuario(@RequestParam String username, Model model) {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -85,7 +86,6 @@ public class PostController {
         return "posts";
     }
 
-    //Funciona
     @GetMapping("/posts/fecha")
     public String postsOrdenadosFecha(@RequestParam(defaultValue="asc") String orden, Model model) {
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -98,7 +98,7 @@ public class PostController {
         model.addAttribute("posts", posts);
         return "posts";
     }
-    //Funciona
+
     @GetMapping("/posts/search")
     public String postsPorTexto(@RequestParam String q, Model model) {
         DAOFactory daoFactory = DAOFactory.getInstance();
