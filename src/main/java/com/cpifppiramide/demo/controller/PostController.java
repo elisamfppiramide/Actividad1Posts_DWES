@@ -61,8 +61,8 @@ public class PostController {
 
         Usuario usuario = daoUsuariosRAM.getUsuarioActual();
         int nuevoID = daoPosts.listaPosts().size() + 1;
-        Post nuevoPost = new Post(nuevoID, texto, new Date(), 0, 0, usuario);
-        daoPosts.add(nuevoPost, usuario);
+        Post nuevoPost = new Post((long) nuevoID, texto, new Date(), 0, 0, usuario);
+        //daoPosts.add(nuevoPost, usuario);
         System.out.println("Nuevo post añadido por: " + usuario.getNombreUsuario());
 
         return "redirect:/posts";

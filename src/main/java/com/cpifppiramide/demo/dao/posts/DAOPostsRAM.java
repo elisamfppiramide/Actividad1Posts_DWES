@@ -7,7 +7,7 @@ import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/*
 public class DAOPostsRAM implements DAOPosts{
 
 
@@ -35,8 +35,11 @@ public class DAOPostsRAM implements DAOPosts{
         this.posts.add(post);
     }
 
+
+
     @Override
     public List<Post> listaPosts() {
         return this.posts;
     }
 }
+*/

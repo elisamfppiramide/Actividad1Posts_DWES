@@ -4,14 +4,14 @@ package com.cpifppiramide.demo.clases;
 import java.util.Date;
 
 public class Post {
-    private int id;
+    private Long id;
     private String texto;
     private Date fecha;
     private int likes;
     private int repost;
     private Usuario usuario;
 
-    public Post(int id, String texto, Date fecha, int likes, int repost, Usuario usuario) {
+    public Post(Long id, String texto, Date fecha, int likes, int repost, Usuario usuario) {
         this.id = id;
         this.texto = texto;
         this.fecha = fecha;
@@ -26,7 +26,7 @@ public class Post {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
     public String getTexto() {
