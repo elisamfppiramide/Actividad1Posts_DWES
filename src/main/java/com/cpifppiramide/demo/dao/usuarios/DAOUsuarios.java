@@ -7,5 +7,6 @@ import java.util.List;
 public interface DAOUsuarios {
     public List<Usuario> listaClientes();
     public void registrarUsuario(Usuario usuario);
-    public Usuario buscaUsuario(String nombreUsuario);
+    public Usuario buscaUsuario(String nombreUsuario, String password);
+    public Usuario getUsuario(Usuario usuario);
 }

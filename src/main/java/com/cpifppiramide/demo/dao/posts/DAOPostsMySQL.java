@@ -13,9 +13,16 @@ import java.util.List;
 public class DAOPostsMySQL implements DAOPosts{
     @Override
     public void add(Post post) {
-        String query = "insert into post values(?,?,?)";
+        String query = "insert into post (texto, id_usuario) values(?, ?)";
 
-
+        try {
+            PreparedStatement statement = DBConnector.getInstance().prepareStatement(query);
+            statement.setString(1, post.getTexto());
+            statement.setLong(2, post.getUsuario().getId());
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

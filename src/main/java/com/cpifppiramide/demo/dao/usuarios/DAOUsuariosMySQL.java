@@ -42,18 +42,25 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
     }
 
     @Override
-    public Usuario buscaUsuario(String nombreUsuario) {
-        String query = "select * from usuario where alias = ?";
-        try{
+    public Usuario getUsuario(Usuario usuario) {
+        return usuario;
+    }
+
+    @Override
+    public Usuario buscaUsuario(String nombreUsuario, String password) {
+        String query = "select * from usuario where nombreUsuario = ? AND password = ?";
+        try {
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
             ps.setString(0, nombreUsuario);
+            ps.setString(1, password);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return new Usuario(rs.getLong("id"), rs.getString("nombreUsuario"), rs.getString("password"));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException();
         }
         return null;
     }
+
 }

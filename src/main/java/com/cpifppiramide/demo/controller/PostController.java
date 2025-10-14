@@ -55,16 +55,8 @@ public class PostController {
 
     @PostMapping("/posts/add")
     public String addPost(@RequestParam String texto) {
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        DAOPosts daoPosts = daoFactory.getDaoPosts();
-        DAOUsuariosRAM daoUsuariosRAM = (DAOUsuariosRAM) daoFactory.getDaoUsuarios();
-
-        Usuario usuario = daoUsuariosRAM.getUsuarioActual();
-        int nuevoID = daoPosts.listaPosts().size() + 1;
-        Post nuevoPost = new Post((long) nuevoID, texto, new Date(), 0, 0, usuario);
-        //daoPosts.add(nuevoPost, usuario);
-        System.out.println("Nuevo post añadido por: " + usuario.getNombreUsuario());
-
+        Post post = new Post(null,texto,null,null,null, DAOFactory.getInstance().getDaoUsuarios().get);
+        DAOFactory.getInstance().getDaoPosts().add(post);
         return "redirect:/posts";
     }
 
