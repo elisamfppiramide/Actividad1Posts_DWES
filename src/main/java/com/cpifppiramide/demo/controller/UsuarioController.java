@@ -3,6 +3,7 @@ package com.cpifppiramide.demo.controller;
 import com.cpifppiramide.demo.clases.Post;
 import com.cpifppiramide.demo.clases.Usuario;
 import com.cpifppiramide.demo.dao.DAOFactory;
+import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosMySQL;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosRAM;
 import org.springframework.ui.Model;
@@ -34,16 +35,15 @@ public class UsuarioController {
 
     @PostMapping("/inicioSesion")
     String inicioSesion(@RequestParam String nombreUsuario, @RequestParam String password, Model model){
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        //DAOUsuariosRAM daoUsuariosRAM = (DAOUsuariosRAM) daoFactory.getDaoUsuarios();
-        Usuario usuarioIniciado = daoFactory.getDaoUsuarios().
-        if(usuario1 == null || !usuario1.getPassword().equals(password)){
-            model.addAttribute("mensaje", "El usuario no ha sido encontrado");
-            return "incioSesion";
-        }
-        daoUsuariosRAM.setUsuarioActual(usuario1);
-        System.out.println("Usuario Actual: " + usuario1.getNombreUsuario());
-        return "redirect:/posts";
+       DAOFactory daoFactory = DAOFactory.getInstance();
+       Usuario usuario = daoFactory.getDaoUsuarios().buscarUsuarioNyC(nombreUsuario, password);
+       if(usuario == null){
+           model.addAttribute("error", "Usuario no encontrado");
+           return "inicioSesion";
+       }
+       model.addAttribute("usuario", usuario);
+        System.out.println("Usuario logueado " + nombreUsuario);
+       return "redirect:/posts";
     }
 
     @PostMapping("/usuario/registrar")
@@ -55,7 +55,6 @@ public class UsuarioController {
         }
         DAOFactory.getInstance().getDaoUsuarios().registrarUsuario(usuario);
         System.out.println("Usuario registrado: " + usuario);
-
         return "redirect:/inicioSesion";
     }
 

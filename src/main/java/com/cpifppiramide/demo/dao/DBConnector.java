@@ -13,7 +13,7 @@ public class DBConnector {
         if(connection == null) {
             try {
                 connection = DriverManager.getConnection(
-                        "mysql.cvooc68auzgf.us-east-1.rds.amazonaws.com/Twitter",
+                        "basededatossql.cpwiwio6mhev.us-east-1.rds.amazonaws.com/Twitter",
                         "admin", "cachorritos11");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
