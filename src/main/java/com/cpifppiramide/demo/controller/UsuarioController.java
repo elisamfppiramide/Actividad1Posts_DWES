@@ -48,7 +48,7 @@ public class UsuarioController {
 
     @PostMapping("/usuario/registrar")
     public String registrar(Usuario usuario, Model model) {
-        Usuario usuarioExistente = DAOFactory.getInstance().getDaoUsuarios().buscaUsuario(usuario.getNombreUsuario());
+        Usuario usuarioExistente = DAOFactory.getInstance().getDaoUsuarios().getUsuario(usuario);
         if (usuarioExistente != null) {
             model.addAttribute("error", "El nombre de usuario ya está registrado.");
             return "registrarse";

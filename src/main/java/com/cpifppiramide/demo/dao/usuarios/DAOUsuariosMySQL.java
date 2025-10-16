@@ -31,7 +31,7 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
     @Override
     public void registrarUsuario(Usuario usuario) {
         try{
-            String query = "insert into usuario values(?, ?)";
+            String query = "insert into usuario values(?, ?, ?)";
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
             ps.setString(0, usuario.getNombreUsuario());
             ps.setString(1, usuario.getPassword());
