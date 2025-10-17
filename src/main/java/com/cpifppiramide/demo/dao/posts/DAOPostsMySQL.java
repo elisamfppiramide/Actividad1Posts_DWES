@@ -32,7 +32,7 @@ public class DAOPostsMySQL implements DAOPosts{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Post post = new Post(rs.getLong("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
+                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
                 posts.add(post);
             }
         }catch(SQLException e){
@@ -50,7 +50,7 @@ public class DAOPostsMySQL implements DAOPosts{
             ps.setLong(0, usuarioId);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Post post = new Post(rs.getLong("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
+                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
                 listaPosts.add(post);
             }
         }catch (SQLException e){
@@ -68,7 +68,7 @@ public class DAOPostsMySQL implements DAOPosts{
             ps.setString(0, texto);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Post post = new Post(rs.getLong("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
+                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
                 listaPosts.add(post);
             }
         }catch (SQLException e){
@@ -87,7 +87,7 @@ public class DAOPostsMySQL implements DAOPosts{
             ps.setString(1, fechaLuego);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Post post = new Post(rs.getLong("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
+                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
                 listaPosts.add(post);
             }
         }catch (SQLException e){

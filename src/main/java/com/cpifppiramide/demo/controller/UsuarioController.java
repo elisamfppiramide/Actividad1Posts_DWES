@@ -42,27 +42,22 @@ public class UsuarioController {
            return "inicioSesion";
        }
        model.addAttribute("usuario", usuario);
-        System.out.println("Usuario logueado " + nombreUsuario);
+       System.out.println("Usuario logueado " + nombreUsuario);
+
        return "redirect:/posts";
     }
 
     @PostMapping("/usuario/registrar")
-    public String registrar(Usuario usuario, Model model) {
-        Usuario usuarioExistente = DAOFactory.getInstance().getDaoUsuarios().getUsuario(usuario);
+    public String registrar(@RequestParam String nombreUsuario, @RequestParam String password, Model model) {
+        Usuario usuarioExistente = DAOFactory.getInstance().getDaoUsuarios().buscarUsuarioNyC(nombreUsuario, password);
         if (usuarioExistente != null) {
             model.addAttribute("error", "El nombre de usuario ya está registrado.");
             return "registrarse";
         }
-        DAOFactory.getInstance().getDaoUsuarios().registrarUsuario(usuario);
-        System.out.println("Usuario registrado: " + usuario);
-        return "redirect:/inicioSesion";
-    }
+        Usuario usuarioNuevo = new Usuario(nombreUsuario, password);
+        DAOFactory.getInstance().getDaoUsuarios().registrarUsuario(usuarioNuevo);
+        System.out.println("Usuario registrado: " + usuarioNuevo);
 
-    @GetMapping("/usuarios")
-    public String mostrarUsuarios(){
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Usuario> usuarios = daoFactory.getDaoUsuarios().listaClientes();
-        System.out.println(usuarios);
-        return "usuarios";
+        return "redirect:/inicioSesion";
     }
 }

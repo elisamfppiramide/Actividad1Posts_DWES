@@ -28,4 +28,19 @@ public class DAOPostsRAM implements DAOPosts{
     public List<Post> listaPosts() {
         return this.posts;
     }
+
+    @Override
+    public List<Post> listaFiltrarUsuario(Long usuarioId) {
+        return List.of();
+    }
+
+    @Override
+    public List<Post> listaFiltrarTexto(String texto) {
+        return List.of();
+    }
+
+    @Override
+    public List<Post> listaFiltrarFecha(String fechaAhora, String fechaLuego) {
+        return List.of();
+    }
 }

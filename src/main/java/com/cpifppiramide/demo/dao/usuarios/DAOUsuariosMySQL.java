@@ -14,13 +14,13 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
     @Override
     public void registrarUsuario(Usuario usuario) {
         try{
-            String query = "insert into usuario values(?, ?, ?)";
+            String query = "insert into usuario values(?, ?)";
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, usuario.getNombreUsuario());
-            ps.setString(1, usuario.getPassword());
+            ps.setString(1, usuario.getNombreUsuario());
+            ps.setString(2, usuario.getPassword());
             ps.execute();
         }catch(SQLException e){
-            throw new RuntimeException();
+            throw new RuntimeException("Fallo al registrar al usuario" + e);
         }
     }
 
@@ -33,7 +33,7 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
             ps.setString(1, password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                return new Usuario(rs.getLong("id"), rs.getString("nombreUsuario"), rs.getString("password"));
+                return new Usuario(rs.getInt("id"), rs.getString("nombreUsuario"), rs.getString("password"));
             }
 
         } catch (SQLException e) {
@@ -47,11 +47,11 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
         String query =  "select * from usuario where nombreUsuario = ? and password = ?";
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, nombreUsuario);
-            ps.setString(1, password);
+            ps.setString(1, nombreUsuario);
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                return new Usuario(rs.getLong("id"), rs.getString("nombreUsuario"), rs.getString("password"));
+                return new Usuario(rs.getInt("id"), rs.getString("nombreUsuario"), rs.getString("password"));
             }
         }catch (SQLException e){
             throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
             ps.setString(0, nombreUsuario);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Usuario(rs.getLong("id"), rs.getString("nombreUsuario"), null);
+                return new Usuario(rs.getInt("id"), rs.getString("nombreUsuario"), null);
             }
         } catch (SQLException e) {
             throw new RuntimeException();

@@ -54,52 +54,32 @@ public class PostController {
     }
 
     @PostMapping("/posts/add")
-    public String addPost(@RequestParam String texto) {
-        Post post = new Post(null,texto,null,null,null, DAOFactory.getInstance().getDaoUsuarios().get);
+    public String addPost(@RequestParam String texto, @RequestParam Integer idUsuario) {
+        Usuario usuario = new Usuario(idUsuario);
+        Post post = new Post(texto, usuario);
         DAOFactory.getInstance().getDaoPosts().add(post);
         return "redirect:/posts";
     }
 
 
     @GetMapping("/posts/user")
-    public String filtrarPorUsuario(@RequestParam String username, Model model) {
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        DAOPosts daoPosts = daoFactory.getDaoPosts();
-
-        List<Post> filtrados = new ArrayList<>();
-        for (Post post : daoPosts.listaPosts()) {
-            Usuario user = post.getUsuario();
-
-            if(user.getNombreUsuario().equalsIgnoreCase(username)){
-                filtrados.add(post);
-            }
-        }
-        model.addAttribute("posts", filtrados);
+    public String filtrarPorUsuario(@RequestParam("id") Long idUsuario, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarUsuario(idUsuario);
+        model.addAttribute("posts", posts);
         return "posts";
     }
 
     @GetMapping("/posts/fecha")
-    public String postsOrdenadosFecha(@RequestParam(defaultValue="asc") String orden, Model model) {
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
-
-        posts.sort(Comparator.comparing(Post::getFecha));
-        if ("desc".equalsIgnoreCase(orden)) {
-            Collections.reverse(posts);
-        }
+    public String postsOrdenadosFecha(@RequestParam String fechaAhora, @RequestParam String fechaLuego, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarFecha(fechaAhora, fechaLuego);
         model.addAttribute("posts", posts);
         return "posts";
     }
 
     @GetMapping("/posts/search")
-    public String postsPorTexto(@RequestParam String q, Model model) {
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
-
-        List<Post> filtrados = posts.stream()
-                .filter(p -> p.getTexto().toLowerCase().contains(q.toLowerCase()))
-                .toList();
-        model.addAttribute("posts", filtrados);
+    public String postsPorTexto(@RequestParam String texto, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarTexto(texto);
+        model.addAttribute("posts", posts);
         return "posts";
     }
 }

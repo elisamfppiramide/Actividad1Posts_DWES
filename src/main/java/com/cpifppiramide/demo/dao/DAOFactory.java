@@ -1,8 +1,10 @@
 package com.cpifppiramide.demo.dao;
 
 import com.cpifppiramide.demo.dao.posts.DAOPosts;
+import com.cpifppiramide.demo.dao.posts.DAOPostsMySQL;
 import com.cpifppiramide.demo.dao.posts.DAOPostsRAM;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
+import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosMySQL;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosRAM;
 
 public class DAOFactory {
@@ -22,14 +24,14 @@ public class DAOFactory {
 
     public DAOUsuarios getDaoUsuarios(){
         if(this.daoUsuarios == null){
-            this.daoUsuarios = new DAOUsuariosRAM();
+            this.daoUsuarios = new DAOUsuariosMySQL();
         }
         return this.daoUsuarios;
     }
 
     public DAOPosts getDaoPosts(){
         if(this.daoPosts == null){
-            this.daoPosts = new DAOPostsRAM(daoUsuarios);
+            this.daoPosts = new DAOPostsMySQL();
         }
         return this.daoPosts;
     }

@@ -16,11 +16,6 @@ public class DAOUsuariosRAM implements DAOUsuarios{
 
 
     @Override
-    public List<Usuario> listaClientes() {
-        return this.usuarios;
-    }
-
-    @Override
     public void registrarUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
     }
@@ -32,6 +27,21 @@ public class DAOUsuariosRAM implements DAOUsuarios{
                 return usuario;
             }
         }
+        return null;
+    }
+
+    @Override
+    public Usuario getUsuario(Usuario usuario) {
+        return null;
+    }
+
+    @Override
+    public Usuario inicioUsuario(String nombreUsuario, String password) {
+        return null;
+    }
+
+    @Override
+    public Usuario buscarUsuarioNyC(String nombreUsuario, String password) {
         return null;
     }
 

@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
-    private Long id;
+    private Integer id;
     private String nombreUsuario;
     private String password;
 
-    public Usuario(Long id, String nombreUsuario, String password) {
+    public Usuario(Integer id, String nombreUsuario, String password) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
+    public Usuario(String nombreUsuario, String password){
+        this.nombreUsuario = nombreUsuario;
+        this.password = password;
+    }
+    public Usuario(Integer id){
+        this.id = id;
+    }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
