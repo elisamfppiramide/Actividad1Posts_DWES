@@ -14,7 +14,7 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
     @Override
     public void registrarUsuario(Usuario usuario) {
         try{
-            String query = "insert into usuario values(?, ?)";
+            String query = "insert into usuario (nombreUsuario, password) values (?, ?)";
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
             ps.setString(1, usuario.getNombreUsuario());
             ps.setString(2, usuario.getPassword());
@@ -26,18 +26,17 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
 
     @Override
     public Usuario inicioUsuario(String nombreUsuario, String password) {
-        String query = "select * from usuario where nombreUsuario = ? and password = ?";
+        String query = "select id_usuario, nombreUsuario, password from usuario where nombreUsuario = ? and password = ?";
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, nombreUsuario);
-            ps.setString(1, password);
+            ps.setString(1, nombreUsuario);
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                return new Usuario(rs.getInt("id"), rs.getString("nombreUsuario"), rs.getString("password"));
+                return new Usuario(rs.getInt("id_usuario"), rs.getString("nombreUsuario"), rs.getString("password"));
             }
-
         } catch (SQLException e) {
-            System.out.println("Error al hacer el login" + e.getMessage());
+            System.out.println("Error al hacer el login " + e.getMessage());
         }
         return null;
     }
@@ -64,7 +63,7 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
         String query = "select * from usuario where nombreUsuario = ?";
         try {
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, nombreUsuario);
+            ps.setString(1, nombreUsuario);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Usuario(rs.getInt("id"), rs.getString("nombreUsuario"), null);
@@ -74,8 +73,6 @@ public class DAOUsuariosMySQL implements DAOUsuarios{
         }
         return null;
     }
-
-
 
     @Override
     public Usuario getUsuario(Usuario usuario) {

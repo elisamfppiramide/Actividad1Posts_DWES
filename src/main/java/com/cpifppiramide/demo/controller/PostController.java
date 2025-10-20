@@ -6,6 +6,7 @@ import com.cpifppiramide.demo.dao.DAOFactory;
 import com.cpifppiramide.demo.dao.posts.DAOPosts;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosRAM;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,13 +55,22 @@ public class PostController {
     }
 
     @PostMapping("/posts/add")
-    public String addPost(@RequestParam String texto, @RequestParam Integer idUsuario) {
-        Usuario usuario = new Usuario(idUsuario);
+    public String addPost(@RequestParam String texto, HttpSession sesion) {
+        Usuario usuario = (Usuario) sesion.getAttribute("usuarioLogueado");
+        if (usuario == null) {
+            System.out.println("⚠️ Usuario no encontrado en sesión.");
+            return "redirect:/inicioSesion";
+        }
+
+        System.out.println("Usuario logueado: " + usuario.getNombreUsuario());
+        System.out.println("Usuario completo: " + usuario.getPassword() + usuario.getNombreUsuario() + usuario.getId());
+        System.out.println("ID del usuario: " + usuario.getId());
+
         Post post = new Post(texto, usuario);
         DAOFactory.getInstance().getDaoPosts().add(post);
+
         return "redirect:/posts";
     }
-
 
     @GetMapping("/posts/user")
     public String filtrarPorUsuario(@RequestParam("id") Long idUsuario, Model model) {

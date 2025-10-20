@@ -13,11 +13,11 @@ import java.util.List;
 public class DAOPostsMySQL implements DAOPosts{
     @Override
     public void add(Post post) {
-        String query = "insert into post (texto, id_usuario) values(?, ?)";
+        String query = "insert into post (texto, fk_id_usuario) values(?, ?)";
         try {
             PreparedStatement statement = DBConnector.getInstance().prepareStatement(query);
-            statement.setString(0, post.getTexto());
-            statement.setLong(1, post.getUsuario().getId());
+            statement.setString(1, post.getTexto());
+            statement.setLong(2, post.getUsuario().getId());
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -27,27 +27,30 @@ public class DAOPostsMySQL implements DAOPosts{
     @Override
     public List<Post> listaPosts() {
         List<Post> posts = new ArrayList<>();
-        String query = "select * from post";
+        String query = "SELECT p.*, u.id_usuario AS usuario_id, u.nombreUsuario " +
+                "FROM post p " +
+                "JOIN usuario u ON p.fk_id_usuario = u.id_usuario";
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
+                Usuario usuario = new Usuario(rs.getInt("usuario_id"), rs.getString("nombreUsuario"));
+                Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), usuario);
                 posts.add(post);
             }
         }catch(SQLException e){
-            throw new RuntimeException();
+            throw new RuntimeException("Error al obtener los datos del post" + e);
         }
         return posts;
     }
 
     @Override
     public List<Post> listaFiltrarUsuario(Long usuarioId) {
-        String query = "select * from post where id_usuario = ?";
+        String query = "select * from post where fk_id_usuario = ?";
         List<Post> listaPosts = new ArrayList<>();
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setLong(0, usuarioId);
+            ps.setLong(1, usuarioId);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
@@ -65,7 +68,7 @@ public class DAOPostsMySQL implements DAOPosts{
         List<Post> listaPosts = new ArrayList<>();
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, texto);
+            ps.setString(1, texto);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);
@@ -83,8 +86,8 @@ public class DAOPostsMySQL implements DAOPosts{
     List<Post> listaPosts = new ArrayList<>();
         try{
             PreparedStatement ps = DBConnector.getInstance().prepareStatement(query);
-            ps.setString(0, fechaAhora);
-            ps.setString(1, fechaLuego);
+            ps.setString(1, fechaAhora);
+            ps.setString(2, fechaLuego);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Post post = new Post(rs.getInt("id"), rs.getString("texto"), rs.getDate("fecha"), rs.getInt("likes"), rs.getInt("repost"), null);

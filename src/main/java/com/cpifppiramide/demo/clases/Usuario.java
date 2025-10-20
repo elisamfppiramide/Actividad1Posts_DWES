@@ -17,8 +17,9 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
-    public Usuario(Integer id){
+    public Usuario(Integer id, String nombreUsuario){
         this.id = id;
+        this.nombreUsuario = nombreUsuario;
     }
 
     public Integer getId() {

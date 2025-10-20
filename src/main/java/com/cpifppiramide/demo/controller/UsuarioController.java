@@ -6,6 +6,7 @@ import com.cpifppiramide.demo.dao.DAOFactory;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuarios;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosMySQL;
 import com.cpifppiramide.demo.dao.usuarios.DAOUsuariosRAM;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,14 +35,15 @@ public class UsuarioController {
     }
 
     @PostMapping("/inicioSesion")
-    String inicioSesion(@RequestParam String nombreUsuario, @RequestParam String password, Model model){
+    String inicioSesion(@RequestParam String nombreUsuario, @RequestParam String password, Model model, HttpSession session){
        DAOFactory daoFactory = DAOFactory.getInstance();
-       Usuario usuario = daoFactory.getDaoUsuarios().buscarUsuarioNyC(nombreUsuario, password);
+       Usuario usuario = daoFactory.getDaoUsuarios().inicioUsuario(nombreUsuario, password);
        if(usuario == null){
            model.addAttribute("error", "Usuario no encontrado");
            return "inicioSesion";
        }
        model.addAttribute("usuario", usuario);
+       session.setAttribute("usuarioLogueado", usuario);
        System.out.println("Usuario logueado " + nombreUsuario);
 
        return "redirect:/posts";
