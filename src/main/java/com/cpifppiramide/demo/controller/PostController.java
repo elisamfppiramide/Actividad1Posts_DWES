@@ -58,14 +58,11 @@ public class PostController {
     public String addPost(@RequestParam String texto, HttpSession sesion) {
         Usuario usuario = (Usuario) sesion.getAttribute("usuarioLogueado");
         if (usuario == null) {
-            System.out.println("⚠️ Usuario no encontrado en sesión.");
+            System.out.println("Usuario no encontrado.");
             return "redirect:/inicioSesion";
         }
 
         System.out.println("Usuario logueado: " + usuario.getNombreUsuario());
-        System.out.println("Usuario completo: " + usuario.getPassword() + usuario.getNombreUsuario() + usuario.getId());
-        System.out.println("ID del usuario: " + usuario.getId());
-
         Post post = new Post(texto, usuario);
         DAOFactory.getInstance().getDaoPosts().add(post);
 
@@ -73,8 +70,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/user")
-    public String filtrarPorUsuario(@RequestParam("id") Long idUsuario, Model model) {
-        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarUsuario(idUsuario);
+    public String filtrarPorUsuario(@RequestParam String nombreUsuario, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarUsuario(nombreUsuario);
         model.addAttribute("posts", posts);
         return "posts";
     }

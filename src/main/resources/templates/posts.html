@@ -14,13 +14,13 @@
 </div>
 <div>
     <form th:action="@{/posts/user}" method="get">
-        <input type="text" name="username" placeholder="Filtrar por usuario">
+        <input type="text" name="nombreUsuario" placeholder="Filtrar por usuario">
         <button type="submit">Filtrar</button>
     </form>
 </div>
 <div>
     <form th:action="@{/posts/search}" method="get">
-        <input type="text" name="q" placeholder="Filtrar por texto">
+        <input type="text" name="texto" placeholder="Filtrar por texto">
         <button type="submit">Buscar</button>
     </form>
 </div>

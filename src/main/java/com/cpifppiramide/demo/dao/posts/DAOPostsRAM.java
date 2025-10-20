@@ -30,9 +30,10 @@ public class DAOPostsRAM implements DAOPosts{
     }
 
     @Override
-    public List<Post> listaFiltrarUsuario(Long usuarioId) {
+    public List<Post> listaFiltrarUsuario(String nombreUsuario) {
         return List.of();
     }
+
 
     @Override
     public List<Post> listaFiltrarTexto(String texto) {

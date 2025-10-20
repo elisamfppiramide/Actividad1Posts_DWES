@@ -11,7 +11,7 @@ public interface DAOPosts {
 
     public void add(Post post);
     public List<Post> listaPosts();
-    public List<Post> listaFiltrarUsuario(Long usuarioId);
+    public List<Post> listaFiltrarUsuario(String nombreUsuario);
     public List<Post> listaFiltrarTexto(String texto);
     public List<Post> listaFiltrarFecha(String fechaAhora, String fechaLuego);
 
