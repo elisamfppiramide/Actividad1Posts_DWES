@@ -13,7 +13,9 @@ public interface DAOPosts {
     public List<Post> listaPosts();
     public List<Post> listaFiltrarUsuario(String nombreUsuario);
     public List<Post> listaFiltrarTexto(String texto);
-    public List<Post> listaFiltrarFecha(String fechaAhora, String fechaLuego);
+    public List<Post> listaFiltrarFecha(String orden);
+    public void actualizarlikes(int id);
+    public void actulizarRepost(int id);
 
 
 

@@ -41,7 +41,18 @@ public class DAOPostsRAM implements DAOPosts{
     }
 
     @Override
-    public List<Post> listaFiltrarFecha(String fechaAhora, String fechaLuego) {
+    public List<Post> listaFiltrarFecha(String orden) {
         return List.of();
+    }
+
+
+    @Override
+    public void actualizarlikes(int id) {
+
+    }
+
+    @Override
+    public void actulizarRepost(int id) {
+
     }
 }

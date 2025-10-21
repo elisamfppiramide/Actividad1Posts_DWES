@@ -30,27 +30,14 @@ public class PostController {
     @PostMapping("/post/like/{id}")
     public String likePost(@PathVariable int id){
         DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
-        for(Post post : posts){
-            if(post.getId() == id){
-                post.setLikes(post.getLikes() + 1);
-                break;
-            }
-        }
-
+        daoFactory.getDaoPosts().actualizarlikes(id);
         return "redirect:/posts";
     }
 
     @PostMapping("/post/repost/{id}")
     public String repostPost(@PathVariable int id){
         DAOFactory daoFactory = DAOFactory.getInstance();
-        List<Post> posts = daoFactory.getDaoPosts().listaPosts();
-        for(Post post : posts){
-            if(post.getId() == id){
-                post.setRepost(post.getRepost() +1);
-                break;
-            }
-        }
+        daoFactory.getDaoPosts().actulizarRepost(id);
         return "redirect:/posts";
     }
 
@@ -77,8 +64,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/fecha")
-    public String postsOrdenadosFecha(@RequestParam String fechaAhora, @RequestParam String fechaLuego, Model model) {
-        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarFecha(fechaAhora, fechaLuego);
+    public String postsOrdenadosFecha(@RequestParam(defaultValue = "asc") String orden, Model model) {
+        List<Post> posts = DAOFactory.getInstance().getDaoPosts().listaFiltrarFecha(orden);
         model.addAttribute("posts", posts);
         return "posts";
     }

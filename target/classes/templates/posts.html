@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Posts</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
 <h2>Posts</h2>
@@ -33,16 +34,17 @@
 <div th:each="post : ${posts}">
     <p><strong><span th:text="${post.usuario.nombreUsuario}"></span></strong></p>
     <p th:text="${post.texto}"></p>
-    <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${#dates.format(post.fecha, 'dd/MM/yyyy')}"></span></p>
     <p><strong>Likes:</strong> <span th:text="${post.likes}"></span> |
         <strong>Reposts:</strong> <span th:text="${post.repost}"></span></p>
-
-    <form th:action="@{/post/like/{id}(id=${post.id})}" method="post">
-        <button type="submit">❤️</button>
-    </form>
-    <form th:action="@{/post/repost/{id}(id=${post.id})}" method="post">
-        <button type="submit">🔁</button>
-    </form>
+    <div class = "emoticonos">
+        <form th:action="@{/post/like/{id}(id=${post.id})}" method="post">
+            <button type="submit">❤️</button>
+        </form>
+        <form th:action="@{/post/repost/{id}(id=${post.id})}" method="post">
+            <button type="submit">🔁</button>
+        </form>
+    </div>
     <hr>
 </div>
 </body>
